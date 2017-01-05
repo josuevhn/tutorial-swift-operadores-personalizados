@@ -34,54 +34,36 @@ print()
 
 protocol NumericType {
     
-    static func *(lhs: Self, rhs: Self) -> Self
-    static func *(lhs: Self, rhs: Int) -> Self
-    static func /(lhs: Self, rhs: Self) -> Self
-    static func /(lhs: Self, rhs: Int) -> Self
-    
+    var doubleValue: Double { get }
+
 } // NumericType
 
-extension Double : NumericType {
-    
-    internal static func *(lhs: Double, rhs: Int) -> Double {
-        return lhs * Double(rhs)
-    }
-
-    internal static func /(lhs: Double, rhs: Int) -> Double {
-        return lhs / Double(rhs)
-    }
-    
- } // extension Double : NumericType
-
-extension Float : NumericType {
-    
-    internal static func *(lhs: Float, rhs: Int) -> Float {
-        return lhs * Float(rhs)
-    }
-
-    internal static func /(lhs: Float, rhs: Int) -> Float {
-        return lhs / Float(rhs)
-    }
-    
- } // extension Float : NumericType
-
-extension Int : NumericType { }
-
 infix operator ¿%
+infix operator %?
 
-func ¿% <T: NumericType>(percentage: T, ofThisTotalValue: T) -> T {
+func ¿% <T: NumericType>(percentage: T, ofTotal: Double) -> Double {
     
-    return (percentage * ofThisTotalValue) / 100
+    return percentage.doubleValue * ofTotal / 100.0
 
 } // infix operator ¿%
 
-infix operator %?
-
-func %? <T: NumericType>(segment: T, ofThisTotalValue: T) -> T {
-
-    return (segment * 100) / ofThisTotalValue
-
+func %? <T: NumericType>(segment: T, ofTotal: Double) -> Double {
+    
+    return segment.doubleValue * 100 / ofTotal
+    
 } // infix operator %?
+
+extension Double: NumericType {
+    
+    var doubleValue: Double { return self }
+    
+} // extension Double : NumericType
+
+extension Int: NumericType {
+    
+    var doubleValue: Double { return Double(self) }
+    
+} // // extension Int : NumericType
 
 let percentage: Double = 8
 let price: Double = 45
